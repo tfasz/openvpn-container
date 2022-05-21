@@ -1,0 +1,33 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+name: Python lint and test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: alpine:latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install dependencies
+      run: |
+        apk add --update openvpn iptables bash easy-rsa python3
+        python3 -m ensurepip && pip3 install --no-cache --upgrade pip setuptools 
+        pip3 install pylint pytest pytest-cov pytest-mock
+        pip3 install -r requirements.txt
+    - name: Test with pytest
+      run: |
+        cat /etc/os-release
+        echo "Running pytest ..."
+        pytest -vv --cov=ovpn/ --cov-fail-under=97
+    - name: Lint with pylint
+      run: |
+        echo "Running pylint ..."
+        pylint ovpn/*.py tests/*.py
