@@ -96,7 +96,7 @@ to ensure it is not lost in the case of a hard drive failure.
 
 Releases are tagged with the current year, month, and an incrementing release number.
 
-1. Tag release on `mainline` branch: `git tag <YYYY-MM-NUM> && git push --tags`
+1. Tag release on `main` branch: `git tag <YYYY-MM-NUM> && git push --tags`
 2. Create release via GitHub UI from tag.
 
 This will build and publish a Docker container tagged with that version: `docker pull ghcr.io/tfasz/openvpn:TAG`
