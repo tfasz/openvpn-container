@@ -1,6 +1,7 @@
 """Manage the PKI config for the VPN server"""
+import os
 from subprocess import Popen, PIPE
-from ovpn_util import load_config, render_template, write_file
+from ovpn_util import load_config, render_template, write_file, ValidationException
 
 class PkiConfig:
     """Manage PKI config for VPN server"""
@@ -47,5 +48,25 @@ class PkiConfig:
         # For a server key with a password, manually init; this is autopilot
         self.exec_pki(f"build-server-full {config['common_name']} nopass")
 
-        # Generate the CRL for client/server certificates revocation.
+        # Init CRL
+        self.gen_crl()
+
+    def gen_crl(self):
+        """Generate the CRL for the server"""
         self.exec_pki("gen-crl")
+
+    def ensure_init(self):
+        """Ensure that the PKI directory exists"""
+        if not os.path.exists(self.pki_dir):
+            raise ValidationException("PKI config directory does not exist - have you run ovpn_initpki?")
+
+    def gen_client(self, name):
+        """Generate a client certificate for name"""
+        self.ensure_init()
+        self.exec_pki(f"--batch build-client-full {name} nopass")
+
+    def revoke_client(self, name):
+        """Revoke the client certificate for name"""
+        self.ensure_init()
+        self.exec_pki(f"--batch revoke {name}")
+        self.gen_crl()

@@ -35,8 +35,6 @@ def read_file(file_path):
 def read_x509(file_path):
     """Read the X509 certificate value from a file using OpenSSL"""
     result = subprocess.run(["openssl", "x509", "-in", file_path], capture_output=True, check=True)
-    if result.returncode > 0:
-        raise Exception(f"Reading x509 failed with return code #{result.returncode}.")
     return result.stdout.decode()
 
 def render_template(template_file, template_data):
@@ -49,10 +47,14 @@ def render_template(template_file, template_data):
 def save_config(data, vpn_dir, config_file_name="config.json"):
     """Save our config file"""
     config_file = get_vpn_config_file(vpn_dir, config_file_name)
-    with open(config_file, "w", encoding="utf8") as file:
-        json.dump(data, file, indent=2)
+    write_json(config_file, data)
 
 def write_file(file_path, contents):
     """Write the contents of a string to specified file name"""
     with open(file_path, "w", encoding="utf8") as file:
         file.write(contents)
+
+def write_json(file_path, data):
+    """Write the contents of a dict to specified file name"""
+    with open(file_path, "w", encoding="utf8") as file:
+        json.dump(data, file, indent=2)

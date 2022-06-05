@@ -1,5 +1,6 @@
 # pylint: disable=import-error,missing-function-docstring,missing-module-docstring
 import os.path
+import pytest
 from ovpn_util import load_config, read_file, read_x509, render_template, save_config
 from tests import test_dir, get_expected_output_file
 
@@ -12,10 +13,22 @@ def test_read_file():
     assert read_file(get_expected_output_file("test.txt")) == "FOO"
 
 def test_read_x509():
-    file_cert = read_x509(os.path.join(test_dir,"pki/issued/test.crt"))
+    file_cert = read_x509(os.path.join(test_dir,"test-pki/issued/test.crt"))
     assert file_cert == TEST_CERT
 
+def test_read_x509_error():
+    with pytest.raises(Exception):
+        read_x509(os.path.join(test_dir,"test-pki/issued/bad-cert.crt"))
+
 def test_save_config():
+    config_file_name = "temp/config.json"
+    data = {}
+    data["foo"] = "bar"
+    save_config(data, test_dir, config_file_name)
+    config = load_config(test_dir, config_file_name)
+    assert config == data
+
+def test_write_json():
     config_file_name = "temp/config.json"
     data = {}
     data["foo"] = "bar"
@@ -33,24 +46,20 @@ def test_render_template():
     assert output == CLIENT_CONF
 
 TEST_CERT="""-----BEGIN CERTIFICATE-----
-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
+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
+/Kt8IuRmKLscG6/56xo7EgZeHdxgrw==
 -----END CERTIFICATE-----
 """
 

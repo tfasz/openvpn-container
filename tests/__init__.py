@@ -1,11 +1,19 @@
-# pylint: disable=import-error,missing-function-docstring,missing-module-docstring,wrong-import-position
+# pylint: disable=import-error,invalid-name,missing-function-docstring,missing-module-docstring,wrong-import-position
 import os.path
 import shutil
 import sys
+
+PKI_BIN_DIR = "/usr/share/easy-rsa"
+
 test_dir = os.path.dirname(__file__)
-temp_dir = os.path.join(test_dir, "temp")
 sys.path.append(os.path.join(test_dir, "../ovpn"))
 from ovpn_util import read_file
+
+temp_dir = os.path.join(test_dir, "temp")
+# Some tests use a static PKI bin directory which is checked into git
+static_pki_dir = os.path.join(test_dir, "test-pki")
+# Some tests generate a new PKI in the temp dir on each run.
+temp_pki_dir = os.path.join(test_dir, "temp/pki")
 
 def get_expected_output_file(file_name):
     expected_output_dir = os.path.join(test_dir, "expected-output")

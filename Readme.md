@@ -54,7 +54,7 @@ You can view server configuration options by running:
 
 * listen on UDP port 1194 for the host `vpn.example.com` with DNS 8.8.8.8:
  
-       docker-compose run --rm openvpn ovpn_genconfig -d 8.8.8.8 vpn.example.com
+       `docker-compose run --rm openvpn ovpn_genconfig -d 8.8.8.8 vpn.example.com`
 
 * listen on TCP port 1194 for the host `vpn.example.com` with DNS 8.8.8.8 and 8.8.4.4:
 
@@ -72,13 +72,13 @@ You can view server configuration options by running:
 
 Once your server is configurd you can generate one or more client configurations.
 
-1. Create your first client credentials by running:
-       
-       docker-compose run --rm openvpn easyrsa build-client-full <CLIENT-NAME>
+1. Create your client and save the client configuration with:
 
-2. Output and save the client configuration with 
+       docker-compose run --rm openvpn ovpn_getclient [CLIENT-NAME] > client.ovpn
 
-       docker-compose run --rm openvpn ovpn_getclient <CLIENT-NAME> > client.ovpn
+This will create the client certificate if it does not yet exist and then output the config file
+which can be used by the client to setup the VPN config. If the client already exists it will just
+output the config file.
 
 ## Slack Notifications
 
@@ -100,7 +100,3 @@ Releases are tagged with the current year, month, and an incrementing release nu
 2. Create release via GitHub UI from tag.
 
 This will build and publish a Docker container tagged with that version: `docker pull ghcr.io/tfasz/openvpn:TAG`
-
-# TODO
-
-* client revocation
