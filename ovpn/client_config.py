@@ -45,6 +45,5 @@ class ClientConfig:
         self.pki_config.revoke_client(name)
 
         # copy updated CRL from PKI dir to the VPN dir and make readable by everyone
-        print(f"VPN: {self.vpn_dir}")
         shutil.copy(os.path.join(self.pki_dir, "crl.pem"), self.vpn_dir)
         os.chmod(os.path.join(self.vpn_dir, "crl.pem"), 0o644)

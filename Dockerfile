@@ -23,6 +23,7 @@ RUN ln -s /opt/ovpn/ovpn_genconfig.py /usr/local/bin/ovpn_genconfig && \
     ln -s /opt/ovpn/ovpn_initpki.py /usr/local/bin/ovpn_initpki && \
     ln -s /opt/ovpn/ovpn_getclient.py /usr/local/bin/ovpn_getclient && \
     ln -s /opt/ovpn/ovpn_notify.py /usr/local/bin/ovpn_notify && \
+    ln -s /opt/ovpn/ovpn_revokeclient.py /usr/local/bin/ovpn_revokeclient && \
     ln -s /opt/ovpn/ovpn_run /usr/local/bin/ovpn_run && \
     chmod a+x /opt/ovpn/ovpn_run /opt/ovpn/*.py
 WORKDIR /etc/openvpn

@@ -80,6 +80,12 @@ This will create the client certificate if it does not yet exist and then output
 which can be used by the client to setup the VPN config. If the client already exists it will just
 output the config file.
 
+## Revoke Client Config
+
+You can revoke a client certificate by running:
+
+       docker-compose run --rm openvpn ovpn_revokeclient [CLIENT-NAME]
+
 ## Slack Notifications
 
 You can configure OpenVPN to call a script on client connect/disconnect. An example of a script which posts
