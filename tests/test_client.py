@@ -36,5 +36,3 @@ def test_revoke_client_config():
     client.revoke("test")
     assert not os.path.exists(os.path.join(temp_pki_dir, "private/test.key"))
     assert os.path.exists(os.path.join(test_dir, "crl.pem"))
-    # Cleanup
-    os.remove(os.path.join(test_dir, "crl.pem"))
