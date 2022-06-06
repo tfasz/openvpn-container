@@ -1,6 +1,5 @@
 """Output client config ovpn file contents for an existing user"""
 import os
-import shutil
 from ovpn_util import load_config, read_file, read_x509, ValidationException
 from pki_config import PkiConfig
 
@@ -43,7 +42,3 @@ class ClientConfig:
 
         # revoke client and re-generate the CRL
         self.pki_config.revoke_client(name)
-
-        # copy updated CRL from PKI dir to the VPN dir and make readable by everyone
-        shutil.copy(os.path.join(self.pki_dir, "crl.pem"), self.vpn_dir)
-        os.chmod(os.path.join(self.vpn_dir, "crl.pem"), 0o644)

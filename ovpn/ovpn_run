@@ -23,13 +23,6 @@ for i in "${OVPN_ROUTES[@]}"; do
     }
 done
 
-# Use a copy of crl.pem as the CRL Needs to be readable by the user/group
-# OpenVPN is running as.
-if [ "$EASYRSA_PKI/crl.pem" -nt "$OPENVPN/crl.pem" ]; then
-    cp -f "$EASYRSA_PKI/crl.pem" "$OPENVPN/crl.pem"
-    chmod 644 "$OPENVPN/crl.pem"
-fi
-
 ARGS=("--config" "$OPENVPN/server.conf")
 echo "Running 'openvpn ${ARGS[@]}'"
 exec openvpn ${ARGS[@]}

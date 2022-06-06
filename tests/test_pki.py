@@ -16,6 +16,7 @@ def test_pki_config():
     config = PkiConfig(test_dir, temp_pki_dir, PKI_BIN_DIR)
     config.init()
     assert read_file(os.path.join(test_dir, "easyrsa-vars")) == read_expected_output("easyrsa-vars")
+    assert read_file(os.path.join(test_dir, "crl.pem")) == read_file(os.path.join(temp_pki_dir, "crl.pem"))
 
 def test_pki_config_client():
     """Verify we can generate a client config."""

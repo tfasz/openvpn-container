@@ -1,5 +1,6 @@
 """Manage the PKI config for the VPN server"""
 import os
+import shutil
 from subprocess import Popen, PIPE
 from ovpn_util import load_config, render_template, write_file, ValidationException
 
@@ -54,6 +55,11 @@ class PkiConfig:
     def gen_crl(self):
         """Generate the CRL for the server"""
         self.exec_pki("gen-crl")
+
+        # copy updated CRL from PKI dir to the VPN dir and make readable by everyone so the OpenVPN process
+        # can read it
+        shutil.copy(os.path.join(self.pki_dir, "crl.pem"), self.vpn_dir)
+        os.chmod(os.path.join(self.vpn_dir, "crl.pem"), 0o644)
 
     def ensure_init(self):
         """Ensure that the PKI directory exists"""
