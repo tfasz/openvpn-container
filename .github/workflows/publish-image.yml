@@ -1,4 +1,4 @@
-# This workflow will build a tagged container image on release.
+# This workflow will build both "latest" and a version tagged container image on release.
 name: Publish Docker Image on Release
 
 on:
