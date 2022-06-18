@@ -58,3 +58,11 @@ def write_json(file_path, data):
     """Write the contents of a dict to specified file name"""
     with open(file_path, "w", encoding="utf8") as file:
         json.dump(data, file, indent=2)
+
+def create_char_file(file_path, file_name):
+    if not os.path.exists(file_path):
+        os.mkdir(file_path)
+    char_file = os.path.join(file_path, file_name)
+    if not os.path.exists(char_file):
+        # TODO - use os.mknod()?
+        exec(f"mknod {char_file} c 10 200")

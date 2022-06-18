@@ -1,8 +1,8 @@
 # pylint: disable=import-error,missing-function-docstring,missing-module-docstring
 import os.path
 import pytest
-from ovpn_util import load_config, read_file, read_x509, render_template, save_config
-from tests import test_dir, get_expected_output_file
+from ovpn_util import load_config, read_file, read_x509, render_template, save_config, create_char_file
+from tests import test_dir, temp_dir, get_expected_output_file
 
 def test_load_config():
     config = load_config(test_dir, "sample-config.json")
