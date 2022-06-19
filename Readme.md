@@ -98,7 +98,17 @@ and then include the Webhook URL when configuring the server.
 Your PKI and configuration files will be written to the `data` directory. You should securely backup this folder  
 to ensure it is not lost in the case of a hard drive failure.
 
-# Release Process
+# Build and Release Process
+
+## Building and Testing Locally
+
+The [Dockerfile](Dockerfile) is a multi-stage build which will create a base container image, run
+the tests and linting, and then create a final container with the config. This allows you to build the
+image, run tests and linting, and create a container image with:
+
+       docker build -t openvpn .
+
+## Releases 
 
 Releases are tagged with the current year, month, and an incrementing release number.
 
