@@ -20,14 +20,18 @@ EXPOSE 1194/udp
 
 # Use a multi-stage build to run tests and lint in this same container.
 # You can build and tests with: docker build --target test .
-FROM base as test
+FROM base as test-base
 
 # Install requirements first so we don't need to do this everytime our scripts/tests change.
 ADD ./requirements-test.txt /opt/
 RUN pip3 install -r /opt/requirements-test.txt
 # Copy whole directory and run tests + lint
 ADD . /opt/ovpn-test
-RUN cd /opt/ovpn-test && pytest -vv --cov=ovpn/ --cov-fail-under=97 && \
+
+# Create a runner image here so you can run the test-base
+from test-base as test-runner
+RUN cd /opt/ovpn-test && \
+    pytest -vv --cov=ovpn/ --cov-fail-under=97 --cov-report term-missing && \
     pylint ovpn/*.py tests/*.py
 
 # If we pass our tests and lint create a container without the tests/lint libs + code.

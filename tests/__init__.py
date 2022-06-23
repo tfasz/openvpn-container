@@ -28,3 +28,6 @@ def read_temp_file(file_name):
 def rm_tree(delete_dir):
     if os.path.exists(delete_dir):
         shutil.rmtree(delete_dir)
+
+# Make sure temp dir is empty at start of tests
+rm_tree(temp_dir)

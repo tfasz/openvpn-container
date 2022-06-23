@@ -2,7 +2,9 @@
 import json
 import os.path
 import subprocess
+import sys
 from jinja2 import Environment, FileSystemLoader
+from subprocess import Popen, PIPE
 
 class ValidationException(Exception):
     """Exception used when validation issues occur."""
@@ -65,4 +67,10 @@ def create_char_file(file_path, file_name):
     char_file = os.path.join(file_path, file_name)
     if not os.path.exists(char_file):
         # TODO - use os.mknod()?
-        exec(f"mknod {char_file} c 10 200")
+        exec_cmd(f"mknod {char_file} c 10 200")
+
+def exec_cmd(cmd, env=None):
+    """Execute command with proper easyrsa environment variables set."""
+    args = cmd.split()
+    with Popen(args, env=env, stdout=sys.stdout,  stderr=sys.stderr) as proc:
+        proc.communicate()

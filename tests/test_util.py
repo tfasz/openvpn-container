@@ -1,7 +1,7 @@
 # pylint: disable=import-error,missing-function-docstring,missing-module-docstring
 import os.path
 import pytest
-from ovpn_util import load_config, read_file, read_x509, render_template, save_config, create_char_file
+from ovpn_util import create_char_file, exec_cmd, load_config, read_file, read_x509, render_template, save_config
 from tests import test_dir, temp_dir, get_expected_output_file
 
 def test_load_config():
@@ -44,6 +44,19 @@ def test_render_template():
     data["tls_crypt_key"] = "secret"
     output = render_template("client.ovpn.j2", data)
     assert output == CLIENT_CONF
+
+def test_create_char_file():
+    char_dir = os.path.join(temp_dir, "char-dir")
+    create_char_file(char_dir, "char-file")
+    assert os.path.exists(char_dir)
+    assert os.path.exists(os.path.join(char_dir, "char-file"))
+
+def test_exec_cmd():
+    exec_cmd("echo foo")
+
+def test_exec_cmd_failure():
+    with pytest.raises(Exception):
+        exec_cmd("cmd-does-not-exist")
 
 TEST_CERT="""-----BEGIN CERTIFICATE-----
 MIICgjCCAWqgAwIBAgIRAJmMFpXknQRwoyXc7wjcFd0wDQYJKoZIhvcNAQELBQAw
